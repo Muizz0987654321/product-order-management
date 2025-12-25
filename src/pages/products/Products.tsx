@@ -1,61 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
+import { productsApi } from "../../services/productService";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-type Row = {
+type ProductRow = {
   id: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  age?: number | null;
+  sku?: string;
+  title?: string;
+  price?: number;
+  rating?: number;
+  stock?: number;
+  category?: string;
+  brand?: string;
 };
 
-const rows: Row[] = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
-
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 150 },
-  { field: "lastName", headerName: "Last name", width: 150 },
+  { field: "id", headerName: "ID", width: 80 },
+  { field: "sku", headerName: "SKU", width: 160 },
+  { field: "title", headerName: "Title", width: 240 },
+  { field: "price", headerName: "Price", type: "number", width: 100 },
+  { field: "rating", headerName: "Rating", type: "number", width: 100 },
+  { field: "stock", headerName: "Stock", type: "number", width: 100 },
+  { field: "category", headerName: "Category", width: 160 },
+  { field: "brand", headerName: "Brand", width: 160 },
   {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-    align: "right",
-    headerAlign: "right",
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    width: 200,
+    field: "actions",
+    headerName: "Actions",
+    width: 150,
     sortable: false,
-    valueGetter: (params) =>
-      `${params.row.firstName ?? ""} ${params.row.lastName ?? ""}`,
+    filterable: false,
+    renderCell: (params) => (
+      <>
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={() => console.log("edit", params.row.id)}
+          aria-label={`edit-${params.row.id}`}
+        >
+          <EditIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          color="error"
+          onClick={() => console.log("delete", params.row.id)}
+          aria-label={`delete-${params.row.id}`}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </>
+    ),
   },
 ];
 
 const Products: React.FC = () => {
+  const [rows, setRows] = useState<ProductRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+
+      try {
+        const data = await productsApi.getProducts("?limit=100");
+
+        const products = data?.products ?? [];
+        console.log("Fetched products:", products);
+        setRows(
+          products.map((p: any) => ({
+            id: p.id,
+            sku: p.sku,
+            title: p.title,
+            price: `${p.price}$`,
+            rating: p.rating,
+            stock: p.stock,
+            category: p.category,
+            brand: p.brand,
+          }))
+        );
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <div>
       <Card sx={{ borderRadius: 2 }}>
         <CardContent>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" sx={{ py: 2 }}>
             Products
           </Typography>
-          <Typography color="text.secondary">
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
             Overview of your products
           </Typography>
 
@@ -63,8 +109,9 @@ const Products: React.FC = () => {
             <DataGrid
               rows={rows}
               columns={columns}
+              loading={loading}
               initialState={{
-                pagination: { paginationModel: { page: 0, pageSize: 5 } },
+                pagination: { paginationModel: { page: 0, pageSize: 10 } },
               }}
               pageSizeOptions={[5, 10, 25]}
               disableRowSelectionOnClick

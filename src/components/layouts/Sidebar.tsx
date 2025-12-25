@@ -11,7 +11,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import { Link, useLocation } from "react-router-dom";
 
-export const drawerWidth = 240;
+export const drawerWidth = 200;
 
 interface SidebarProps {
   // static sidebar - no props required
@@ -34,57 +34,57 @@ const Sidebar = (_props?: SidebarProps) => {
     >
       <Toolbar />
       <Divider />
-      <List dense disablePadding sx={{ py: 3, px: 1 }}>
-        <ListItem disablePadding sx={{ mb: 1 }}>
+      <List dense disablePadding sx={{ py: 2, px: 0.5 }}>
+        <ListItem disablePadding sx={{ mb: 0.5 }}>
           <ListItemButton
             component={Link}
             to="/dashboard"
             selected={isSelected("/dashboard")}
-            sx={{ py: 0.25, minHeight: 32, px: 1.25, color: "#fff" }}
+            sx={{ py: 0.125, minHeight: 28, px: 0.75, color: "#fff" }}
           >
-            <ListItemIcon sx={{ minWidth: 34 }}>
+            <ListItemIcon sx={{ minWidth: 28 }}>
               <InboxIcon fontSize="small" sx={{ color: "#fff" }} />
             </ListItemIcon>
             <ListItemText
               primary="Dashboard"
-              primaryTypographyProps={{ sx: { fontSize: "0.88rem" } }}
+              primaryTypographyProps={{ sx: { fontSize: "0.82rem" } }}
             />
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ mb: 1 }}>
+        <ListItem disablePadding sx={{ mb: 0.5 }}>
           <ListItemButton
             component={Link}
             to="/orders"
             selected={isSelected("/orders")}
-            sx={{ py: 0.25, minHeight: 32, px: 1.25 }}
+            sx={{ py: 0.125, minHeight: 28, px: 0.75 }}
           >
-            <ListItemIcon sx={{ minWidth: 34 }}>
+            <ListItemIcon sx={{ minWidth: 28 }}>
               <ShoppingCartIcon fontSize="small" sx={{ color: "#fff" }} />
             </ListItemIcon>
             <ListItemText
               primary="Orders"
               primaryTypographyProps={{
-                sx: { fontSize: "0.88rem", color: "#fff" },
+                sx: { fontSize: "0.82rem", color: "#fff" },
               }}
             />
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding sx={{ mb: 1 }}>
+        <ListItem disablePadding sx={{ mb: 0.5 }}>
           <ListItemButton
             component={Link}
             to="/products"
             selected={isSelected("/products")}
-            sx={{ py: 0.25, minHeight: 32, px: 1.25 }}
+            sx={{ py: 0.125, minHeight: 28, px: 0.75 }}
           >
-            <ListItemIcon sx={{ minWidth: 34 }}>
+            <ListItemIcon sx={{ minWidth: 28 }}>
               <Inventory2Icon fontSize="small" sx={{ color: "#fff" }} />
             </ListItemIcon>
             <ListItemText
               primary="Products"
               primaryTypographyProps={{
-                sx: { fontSize: "0.88rem", color: "#fff" },
+                sx: { fontSize: "0.82rem", color: "#fff" },
               }}
             />
           </ListItemButton>
