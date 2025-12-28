@@ -5,7 +5,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "types": ["vite/client", "react", "react-dom"],
+    "types": ["vite/client", "react", "react-dom", "node"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -14,7 +14,17 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "jsx": "react-jsx",
+      "jsx": "react-jsx",
+      "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@types/*": ["src/types/*"],
+      "@types": ["src/types"],
+      "@store/*": ["src/store/*"],
+      "@features/*": ["src/features/*"],
+      "@pages/*": ["src/pages/*"],
+      "@services/*": ["src/services/*"]
+    },
 
     /* Linting */
     "strict": true,
@@ -24,5 +34,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/**/*.stories.*", "src/**/*.stories.tsx", "src/**/*.stories.ts"]
 }

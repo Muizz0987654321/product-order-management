@@ -29,6 +29,10 @@ const Sidebar = (_props?: SidebarProps) => {
         flexShrink: { sm: 0 },
         display: { xs: "none", sm: "block" },
         backgroundColor: "#2b2a2a",
+        position: { sm: "fixed" },
+        top: 0,
+        left: 0,
+        height: "100vh",
       }}
       aria-label="main navigation"
     >
